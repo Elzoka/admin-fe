@@ -5,9 +5,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AdminTableComponent } from './admin-table/admin-table.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, AdminTableComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
