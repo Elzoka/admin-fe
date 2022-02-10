@@ -1,1 +1,109 @@
-<h1>Admin Table</h1>
+<p-table
+  [value]="admins"
+  [lazy]="true"
+  (onLazyLoad)="loadAdmins($event)"
+  responsiveLayout="scroll"
+  dataKey="_id"
+  [selection]="selectedAdmins"
+  (selectionChange)="onSelectionChange($event)"
+  [selectAll]="selectAll"
+  (selectAllChange)="onSelectAllChange($event)"
+  [paginator]="true"
+  [rows]="10"
+  [totalRecords]="totalRecords"
+  [loading]="loading"
+  #dt
+>
+  <ng-template pTemplate="caption">
+    <div class="flex">
+      <span class="p-input-icon-left ml-auto">
+        <i class="pi pi-search"></i>
+        <input
+          pInputText
+          type="text"
+          (input)="search(dt, $event)"
+          placeholder="Search keyword"
+        />
+      </span>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th style="width: 3rem">
+        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+      </th>
+      <th pSortableColumn="first_name">
+        First Name <p-sortIcon field="first_name"></p-sortIcon
+        ><p-columnFilter
+          type="text"
+          field="first_name"
+          display="menu"
+        ></p-columnFilter>
+      </th>
+      <th pSortableColumn="last_name">
+        Last Name <p-sortIcon field="last_name"></p-sortIcon>
+        <p-columnFilter
+          type="text"
+          field="last_name"
+          display="menu"
+        ></p-columnFilter>
+      </th>
+      <th pSortableColumn="email">
+        Email <p-sortIcon field="email"></p-sortIcon>
+        <p-columnFilter
+          type="text"
+          field="email"
+          display="menu"
+        ></p-columnFilter>
+      </th>
+      <th pSortableColumn="status">
+        Status <p-sortIcon field="status"></p-sortIcon>
+        <p-columnFilter
+          type="text"
+          field="status"
+          display="menu"
+        ></p-columnFilter>
+      </th>
+      <th style="width: 8em"></th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-customer>
+    <tr>
+      <td>
+        <p-tableCheckbox [value]="customer"></p-tableCheckbox>
+      </td>
+      <td style="min-width: 200px">
+        <p-avatar
+          [image]="customer.avatar"
+          [label]="
+            customer.avatar
+              ? null
+              : customer.first_name.charAt(0).toUpperCase() +
+                customer.last_name.charAt(0).toUpperCase()
+          "
+          shape="circle"
+          styleClass="round-image"
+        >
+        </p-avatar>
+        <span class="image-text">
+          {{ customer.first_name }}
+        </span>
+      </td>
+
+      <td>{{ customer.last_name }}</td>
+      <td>{{ customer.email }}</td>
+      <td>{{ customer.status }}</td>
+
+      <td style="text-align: center">
+        <button
+          type="button"
+          class="toggle-menu-btn"
+          (click)="menu.toggle($event)"
+        >
+          <i class="pi pi-ellipsis-v"></i>
+        </button>
+        <p-menu #menu [popup]="true" [model]="items"></p-menu>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
