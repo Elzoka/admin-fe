@@ -5,7 +5,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AdminTableComponent } from './admin-table/admin-table.component';
+import { AdminTableComponent } from './admin/admin-table/admin-table.component';
+import * as fromApp from './store/app.reducer';
 
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
@@ -20,6 +21,7 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { InputTextModule } from 'primeng/inputtext';
 import { AvatarModule } from 'primeng/avatar';
 import { MenuModule } from 'primeng/menu';
+import { StoreModule } from '@ngrx/store';
 
 @NgModule({
   declarations: [AppComponent, AdminTableComponent],
@@ -41,6 +43,7 @@ import { MenuModule } from 'primeng/menu';
     InputTextModule,
     AvatarModule,
     MenuModule,
+    StoreModule.forRoot(fromApp.reducers),
   ],
   providers: [],
   bootstrap: [AppComponent],
