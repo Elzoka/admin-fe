@@ -20,6 +20,12 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { InputTextModule } from 'primeng/inputtext';
 import { AvatarModule } from 'primeng/avatar';
 import { MenuModule } from 'primeng/menu';
+import { DefaultDataServiceConfig, EntityDataModule } from '@ngrx/data';
+import { entityConfig } from './store/entity-metadata';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [AppComponent, AdminTableComponent],
@@ -41,8 +47,22 @@ import { MenuModule } from 'primeng/menu';
     InputTextModule,
     AvatarModule,
     MenuModule,
+    StoreModule.forRoot({}),
+    EffectsModule.forRoot(),
+    EntityDataModule.forRoot(entityConfig),
+    StoreDevtoolsModule.instrument({
+      maxAge: 50, // Retains last 25 states
+      logOnly: environment.production, // Restrict extension to log-only mode
+    }),
   ],
-  providers: [],
+  providers: [
+    [
+      {
+        provide: DefaultDataServiceConfig,
+        useValue: { root: 'http://localhost:3006' },
+      },
+    ],
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

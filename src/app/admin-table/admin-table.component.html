@@ -1,5 +1,5 @@
 <p-table
-  [value]="admins"
+  [value]="(admins | async).results || []"
   [lazy]="true"
   (onLazyLoad)="loadAdmins($event)"
   responsiveLayout="scroll"
@@ -11,7 +11,7 @@
   [paginator]="true"
   [rows]="10"
   [totalRecords]="totalRecords"
-  [loading]="loading"
+  [loading]="(loading | async) || false"
   #dt
 >
   <ng-template pTemplate="caption">

@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { LazyLoadEvent, MenuItem } from 'primeng/api';
-import { take } from 'rxjs';
+import { map, Observable, take, tap } from 'rxjs';
 import { Admin } from '../services/admin/Admin.model';
 import { AdminService } from '../services/admin/admin.service';
 
@@ -9,12 +9,12 @@ import { AdminService } from '../services/admin/admin.service';
   templateUrl: './admin-table.component.html',
   styleUrls: ['./admin-table.component.css'],
 })
-export class AdminTableComponent implements OnInit {
-  admins: Admin[] = [];
+export class AdminTableComponent {
+  admins: Observable<any>;
   totalRecords: number = 100;
   // sub: Subscription;
   // cols: any[] = [];
-  loading: boolean = false;
+  loading: Observable<boolean>;
   selectAll: boolean = false;
   editing: boolean = false;
   selectedAdmins: any[] = [];
@@ -23,23 +23,17 @@ export class AdminTableComponent implements OnInit {
     { label: 'Edit', icon: 'pi pi-fw pi-pencil' },
   ];
 
-  constructor(private adminService: AdminService) {}
-
-  ngOnInit() {}
+  // loading$: Observable<boolean>;
+  // admins$:
+  constructor(private adminService: AdminService) {
+    this.loading = adminService.loading$;
+    this.admins = adminService.entities$;
+  }
 
   loadAdmins(event: LazyLoadEvent) {
     console.log('loadCustomers', event);
-    const page_size = event.rows || 10;
-    const page_number = event.first! / page_size + 1;
-    this.loading = true;
-    this.adminService
-      .listing({ page_number, page_size, search: event.globalFilter })
-      .pipe(take(1))
-      .subscribe((admins) => {
-        this.loading = false;
-        this.totalRecords = admins.pagination.count;
-        this.admins = admins.results;
-      });
+
+    this.adminService.getAll();
   }
 
   onSelectionChange(value = []) {
